@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Opl
+Comment=Opl P2P Cryptocurrency
+Comment[fr]=Opl, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Opl, eşten eşe kriptografik sanal para birimi
+Exec=opl-qt %u
+Terminal=false
+Type=Application
+Icon=opl128
+MimeType=x-scheme-handler/opl;
+Categories=Office;Finance;

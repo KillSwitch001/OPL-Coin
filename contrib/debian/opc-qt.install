@@ -1,0 +1,6 @@
+usr/local/bin/opl-qt usr/bin
+share/pixmaps/opl32.xpm usr/share/pixmaps
+share/pixmaps/opl16.xpm usr/share/pixmaps
+share/pixmaps/opl128.png usr/share/pixmaps
+debian/opl-qt.desktop usr/share/applications
+debian/opl-qt.protocol usr/share/kde4/services/
