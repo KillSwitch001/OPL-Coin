@@ -2360,24 +2360,30 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
             const uint256& wtxid = it->first;
             const CWalletTx* pcoin = &(*it).second;
 
-            if (!CheckFinalTx(*pcoin))
+            if (!CheckFinalTx(*pcoin)) {
                 continue;
+            }
 
-            if (fOnlyConfirmed && !pcoin->IsTrusted())
+            if (fOnlyConfirmed && !pcoin->IsTrusted()) {
                 continue;
+            }
 
-            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
+            if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0){
                 continue;
+            }
+
 
             int nDepth = pcoin->GetDepthInMainChain(false);
             // do not use IX for inputs that have less then INSTANTSEND_CONFIRMATIONS_REQUIRED blockchain confirmations
-            if (fUseInstantSend && nDepth < INSTANTSEND_CONFIRMATIONS_REQUIRED)
+            if (fUseInstantSend && nDepth < INSTANTSEND_CONFIRMATIONS_REQUIRED) {
                 continue;
+            }
 
             // We should not consider coins which aren't at least in our mempool
             // It's possible for these to be conflicted via ancestors which we may never be able to detect
-            if (nDepth == 0 && !pcoin->InMempool())
+            if (nDepth == 0 && !pcoin->InMempool()) {
                 continue;
+            }
 
             for (unsigned int i = 0; i < pcoin->vout.size(); i++) {
                 bool found = false;
@@ -2387,14 +2393,14 @@ void CWallet::AvailableCoins(vector<COutput>& vCoins, bool fOnlyConfirmed, const
                     if (CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue)) continue; // do not use collateral amounts
                     found = !CPrivateSend::IsDenominatedAmount(pcoin->vout[i].nValue);
                 } else if(nCoinType == ONLY_1000) {
-                    found = pcoin->vout[i].nValue == 1000*COIN;
+                    found = pcoin->vout[i].nValue >= 3000 * COIN;
                 } else if(nCoinType == ONLY_PRIVATESEND_COLLATERAL) {
                     found = CPrivateSend::IsCollateralAmount(pcoin->vout[i].nValue);
                 } else {
                     found = true;
                 }
-                if(!found) continue;
-
+                if(!found)
+                    continue;
                 isminetype mine = IsMine(pcoin->vout[i]);
                 if (!(IsSpent(wtxid, i)) && mine != ISMINE_NO &&
                     (!IsLockedCoin((*it).first, i) || nCoinType == ONLY_1000) &&
@@ -2979,20 +2985,30 @@ bool CWallet::GetMasternodeOutpointAndKeys(COutPoint& outpointRet, CPubKey& pubK
     std::vector<COutput> vPossibleCoins;
     AvailableCoins(vPossibleCoins, true, NULL, false, ONLY_1000);
     if(vPossibleCoins.empty()) {
+        std::cout << "vPossibleCoins.empty" << std::endl;
         LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate any valid masternode vin\n");
         return false;
     }
 
-    if(strTxHash.empty()) // No output specified, select the first one
+    if(strTxHash.empty()) { // No output specified, select the first one
+        std::cout << "strTxHash.empty()"<< std::endl;
         return GetOutpointAndKeysFromOutput(vPossibleCoins[0], outpointRet, pubKeyRet, keyRet);
+    }
 
     // Find specific vin
     uint256 txHash = uint256S(strTxHash);
     int nOutputIndex = atoi(strOutputIndex.c_str());
 
-    BOOST_FOREACH(COutput& out, vPossibleCoins)
-        if(out.tx->GetHash() == txHash && out.i == nOutputIndex) // found it!
+    BOOST_FOREACH(COutput& out, vPossibleCoins) {
+        if(out.tx->GetHash() == txHash && out.i == nOutputIndex) {// found it! {}
+//            std::cout << "out.tx->GetHash() -> " << out.tx->GetHash() << std::endl;
+//            std::cout << "txHash -> " << txHash << std::endl;
+            std::cout << "out.i -> " << out.i << std::endl;
+            std::cout << "nOutputIndex -> " << nOutputIndex << std::endl;
             return GetOutpointAndKeysFromOutput(out, outpointRet, pubKeyRet, keyRet);
+        }
+    }
+
 
     LogPrintf("CWallet::GetMasternodeOutpointAndKeys -- Could not locate specified masternode vin\n");
     return false;

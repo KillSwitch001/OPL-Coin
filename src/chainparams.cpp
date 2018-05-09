@@ -260,8 +260,6 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        //vSeeds.push_back(CDNSSeedData("opcdot.io",  "testnet-seed.opcdot.io"));
-        //vSeeds.push_back(CDNSSeedData("masternode.io", "test.dnsseed.masternode.io"));
 
         // Testnet Opc addresses start
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,72);
