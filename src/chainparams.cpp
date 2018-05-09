@@ -127,10 +127,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x8b;
-        pchMessageStart[1] = 0x13;
-        pchMessageStart[2] = 0xd7;
-        pchMessageStart[3] = 0x55;
+        pchMessageStart[0] = 0x68;
+        pchMessageStart[1] = 0x61;
+        pchMessageStart[2] = 0x6f;
+        pchMessageStart[3] = 0x7a;
         vAlertPubKey = ParseHex("91af8679ea5a80159cfe0e272e34dd12710c48200a98edff7117f8fca8f88cf88726f072aee00a80827cde73e8b20bd6e1fd55876a4cd08afeb4fb557befb05fe8");
         nDefaultPort = 5567;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
